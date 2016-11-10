@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-    etcd:
+    etcd-6:
         image: rancher/etcd:v2.3.7-11
         labels:
             io.rancher.scheduler.affinity:host_label_soft: etcd=true
@@ -15,13 +15,16 @@ services:
         - etcd:/pdata
         - etcd_backup:/data-backup
 
+# Takes 2-3 minutes for plugin to format this block device as ext4 and host goes into reconnecting state (`docker ps` hangs)
+# https://github.com/docker/docker/issues/18504
+# to fix, we lazy init during FS creation
 volumes:
     etcd:
         driver: local
     etcd_backup:
         driver: rancher-ebs
         driver_opts:
-            # GiB
-            size: '1'
+            # GiB (500 GiB minimum for sc1)
+            size: 500
             # Throughput Optimized HDD
             volumeType: st1

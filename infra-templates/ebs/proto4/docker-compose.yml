@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-    etcd:
+    etcd-4:
         image: rancher/etcd:v2.3.7-11
         labels:
             io.rancher.scheduler.affinity:host_label_soft: etcd=true
@@ -21,9 +21,9 @@ volumes:
     etcd_backup:
         driver: rancher-ebs
         driver_opts:
-            # GiB
-            size: '1'
+            # GiB (4 GiB minimum for io1)
+            size: 4
             # Provisioned IOPS SSD
             volumeType: io1
             # Range is 100 to 20000, maximum ratio of 30 per GiB
-            iops: 30
+            iops: 120

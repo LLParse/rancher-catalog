@@ -21,4 +21,7 @@ volumes:
     etcd_backup:
         driver: rancher-ebs
         driver_opts:
+            # GiB
             size: '1'
+            # Cold HDD
+            volumeType: sc1

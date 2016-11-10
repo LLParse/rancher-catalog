@@ -13,6 +13,14 @@
     label: AWS Secret Key
     type: password
     description: Optional if using IAM Profile
+  - variable: RANCHER_DEBUG
+    label: Debug Mode
+    type: enum
+    default: true
+    options:
+    - true
+    - false
+    description: Enable or disable verbose logging
 ebs-driver:
   storage_driver:
     name: rancher-ebs

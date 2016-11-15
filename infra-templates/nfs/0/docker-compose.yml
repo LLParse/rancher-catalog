@@ -6,6 +6,7 @@ nfs-driver:
     io.rancher.scheduler.global: 'true'
     io.rancher.container.create_agent: 'true'
     io.rancher.container.agent.role: environment
+    io.rancher.container.pull_image: always
   environment:
     NFS_SERVER: '${NFS_SERVER}'
     MOUNT_DIR: '${MOUNT_DIR}'

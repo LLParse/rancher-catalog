@@ -16,7 +16,7 @@
   - variable: RANCHER_DEBUG
     label: Debug Mode
     type: enum
-    default: true
+    default: false
     options:
     - true
     - false

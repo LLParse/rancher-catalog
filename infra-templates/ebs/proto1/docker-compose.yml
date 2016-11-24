@@ -10,14 +10,12 @@ services:
             RANCHER_DEBUG: 'true'
             EMBEDDED_BACKUPS: 'true'
             BACKUP_PERIOD: 1s
-            BACKUP_RETENTION: 1m
+            BACKUP_RETENTION: 10m
         volumes:
-        - etcd:/pdata
+        - /pdata
         - etcd_backup:/data-backup
 
 volumes:
-    etcd:
-        driver: local
     etcd_backup:
         driver: rancher-ebs
         driver_opts:

@@ -8,6 +8,7 @@ services:
       io.rancher.scheduler.global: 'true'
       io.rancher.container.create_agent: 'true'
       io.rancher.container.agent.role: environment
+      io.rancher.container.pull_image: always
     environment:
       AWS_SECRET_ACCESS_KEY: '${AWS_SECRET_ACCESS_KEY}'
       AWS_ACCESS_KEY_ID: '${AWS_ACCESS_KEY_ID}'

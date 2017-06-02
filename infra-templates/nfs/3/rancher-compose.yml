@@ -11,8 +11,8 @@
     required: true
     type: "string"
   - variable: "MOUNT_DIR"
-    label: "Export Directory"
-    description: "The default exported directory"
+    label: "Export Base Directory"
+    description: "The default exported base directory"
     type: "string"
     required: true
   - variable: "MOUNT_OPTS"

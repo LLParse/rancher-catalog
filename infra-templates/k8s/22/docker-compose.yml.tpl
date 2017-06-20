@@ -192,6 +192,10 @@ controller-manager:
         - kube-controller-manager
         - --master=https://kubernetes.kubernetes.rancher.internal:6443
         - --cloud-provider=${CLOUD_PROVIDER}
+        {{- if eq .Values.CLOUD_PROVIDER "gce" }}
+        - --allocate-node-cidrs=true
+        - --cluster-cidr=10.42.0.0/16
+        {{- end }}
         - --address=0.0.0.0
         - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
         - --root-ca-file=/etc/kubernetes/ssl/ca.pem

@@ -13,6 +13,7 @@ services:
       CIFS_SERVER: '${CIFS_SERVER}'
       MOUNT_DIR: '${MOUNT_DIR}'
       MOUNT_OPTS: '${CIFS_VERS},user=${USER},password=${PASSWORD},${MOUNT_OPTS}'
+      RANCHER_DEBUG: '${RANCHER_DEBUG}'
     volumes:
     - /var/run:/var/run
     - /dev:/host/dev

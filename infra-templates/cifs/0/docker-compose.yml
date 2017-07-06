@@ -1,0 +1,26 @@
+version: '2'
+services:
+  cifs-driver:
+    privileged: true
+    image: llparse/storage-cifs:dev
+    pid: host
+    labels:
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.create_agent: 'true'
+      io.rancher.container.agent.role: environment
+      io.rancher.scheduler.affinity:host_label: ${HOST_LABEL}
+    environment:
+      CIFS_SERVER: '${CIFS_SERVER}'
+      MOUNT_DIR: '${MOUNT_DIR}'
+      MOUNT_OPTS: '${CIFS_VERS},user=${USER},password=${PASSWORD},${MOUNT_OPTS}'
+    volumes:
+    - /var/run:/var/run
+    - /dev:/host/dev
+    - /var/lib/rancher/volumes:/var/lib/rancher/volumes:shared
+    - /run:/run
+    logging:
+      driver: json-file
+      options:
+        max-size: 25m
+        max-file: '2'
+

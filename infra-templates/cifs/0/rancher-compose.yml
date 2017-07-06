@@ -1,0 +1,76 @@
+.catalog:
+    name: "DVSL - Rancher CIFS"
+    version: "0.1"
+    description: "Rancher CIFS - Docker volume plugin"
+    questions:
+    - variable: "CIFS_SERVER"
+      description: "IP or hostname of the CIFS Server"
+      label: "CIFS Server"
+      required: true
+      default: "//myaccountname.file.core.windows.net/mysharename"
+      type: "string"
+    - variable: "CIFS_VERS"
+      label: CIFS Version
+      description: The CIFS version to use
+      type: enum
+      required: true
+      default: vers=3.0
+      options:
+      - vers=3.0
+    - variable: "MOUNT_DIR"
+      label: "Mount Directory"
+      description: "The directory on the CIFS server to mount"
+      default: "/"
+      type: "string"
+    - variable: "MOUNT_OPTS"
+      label: "Mount Options"
+      description: "Comma delimited list of mount options, for example: 'proto=udp'. Do not specify `cifsvers` option, it will be ignored."
+      default: "dir_mode=0777,file_mode=0777"
+      type: "string"
+    - variable: "USER"
+      label: "User"
+      description: "user=myaccountname"
+      type: "string"
+      required: true
+    - variable: "PASSWORD"
+      label: "password"
+      description: "password=StorageAccountKeyEndingIn=="
+      type: "string"
+      required: true
+    - variable: "RANCHER_DEBUG"
+      label: "Debug Mode"
+      type: enum
+      description: "Enable or disable verbose logging"
+      default: false
+      options:
+      - true
+      - false
+    - variable: HOST_LABEL
+      label: Host Label
+      type: string
+      description: Host label to schedule container
+      default: role=platform-storage
+    - variable: SCOPE
+      label: Scope
+      type: enum
+      description: Set volume scope
+      default: environment
+      options:
+      - local
+      - environment
+    - variable: VOLUME_ACCESS_MODE
+      label: Volume Access Mode
+      type: enum
+      description: Volume access mode
+      default: multiHostRW
+      options:
+      - singleHostRW
+      - singleInstanceRW
+      - multiHostRW
+
+cifs-driver:
+  storage_driver:
+    name: rancher-cifs
+    scope: ${SCOPE}
+    volume_access_mode: ${VOLUME_ACCESS_MODE}
+

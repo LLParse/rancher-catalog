@@ -1,0 +1,9 @@
+name: Rancher CIFS
+description: |
+  CIFS volume plugin for Azure file storage
+version: 0.2.0
+category: Storage
+labels:
+  io.rancher.certified: Experimental
+  io.rancher.orchestration.supported: 'cattle,mesos,swarm'
+

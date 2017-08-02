@@ -122,6 +122,8 @@ etcd:
     volumes:
     - etcd:/pdata:z
     - /var/etcd/backups:/data-backup:z
+    volumes_from:
+    - data
 
 data:
     image: busybox

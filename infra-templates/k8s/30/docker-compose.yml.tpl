@@ -9,16 +9,7 @@ kubelet:
         {{- end }}
     command:
         - kubelet
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --api_servers=https://kubernetes.kubernetes.rancher.internal:6443
-        - --allow-privileged=true
-        - --register-node=true
-        - --cloud-provider=${CLOUD_PROVIDER}
-        - --healthz-bind-address=0.0.0.0
-        - --cluster-dns=10.43.0.10
-        - --cluster-domain=cluster.local
-        - --network-plugin=cni
-        - --cni-conf-dir=/etc/cni/managed.d
+        - --kubeconfig=/etc/cni/managed.d
         {{- if and (ne .Values.REGISTRY "") (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
         - --pod-infra-container-image=${REGISTRY}/${POD_INFRA_CONTAINER_IMAGE}
         {{- else if (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
@@ -111,7 +102,6 @@ etcd:
         io.rancher.scheduler.affinity:host_label: etcd=true
         {{- end }}
         io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-        io.rancher.sidekicks: data
     environment:
         RANCHER_DEBUG: 'true'
         EMBEDDED_BACKUPS: '${EMBEDDED_BACKUPS}'
@@ -122,17 +112,6 @@ etcd:
     volumes:
     - etcd:/pdata:z
     - /var/etcd/backups:/data-backup:z
-    volumes_from:
-    - data
-
-data:
-    image: busybox
-    entrypoint: /bin/true
-    net: none
-    volumes:
-    - /data
-    labels:
-        io.rancher.container.start_once: 'true'
 
 kubernetes:
     labels:

@@ -1,6 +1,6 @@
-name: Network Services
+name: Windows Network Services
 version: v0.2.5
 category: Framework
 labels:
   io.rancher.certified: rancher
-  io.rancher.orchestration.supported: 'cattle,mesos,swarm,kubernetes'
+  io.rancher.orchestration.supported: 'windows'

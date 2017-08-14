@@ -4,14 +4,13 @@ services:
     image: rancher/windows-scheduler:v0.0.2
     command:
     - windows-scheduler
-    - -metadata-address=localhost:41
+    - -metadata-address=169.254.169.250:41
     - -listen=:${PORT}
     - -debug=${DEBUG}
     labels:
       io.rancher.container.agent_service.scheduling: "true"
       io.rancher.container.agent_service.scheduling.priority: "${PRIORITY}"
       io.rancher.container.create_agent: "true"
-      io.rancher.container.dns: 'true'
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
     logging:
@@ -19,4 +18,3 @@ services:
       options:
         max-size: 25m
         max-file: '2'
-    network_mode: host

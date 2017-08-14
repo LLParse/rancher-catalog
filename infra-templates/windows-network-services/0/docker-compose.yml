@@ -5,7 +5,7 @@ services:
     privileged: true
     network_mode: host
     pid: host
-    command: plugin-manager --metadata-url http://169.254.169.250/2016-07-29
+    command: plugin-manager --metadata-url http://169.254.169.250:41/2016-07-29
     environment:
       DOCKER_BRIDGE: docker0
       METADATA_IP: 169.254.169.250
@@ -19,6 +19,7 @@ services:
     - rancher-cni-driver:/etc/cni
     - rancher-cni-driver:/opt/cni
     labels:
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
     logging:
       driver: json-file
@@ -30,10 +31,11 @@ services:
     - NET_ADMIN
     image: rancher/metadata:v0.9.3
     network_mode: bridge
-    command: start.sh rancher-metadata -subscribe
+    command: start.sh rancher-metadata -subscribe -listen=:41
     labels:
       io.rancher.sidekicks: dns
       io.rancher.container.create_agent: 'true'
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
       io.rancher.container.agent_service.metadata: 'true'
     logging:
@@ -41,6 +43,10 @@ services:
       options:
         max-size: 25m
         max-file: '2'
+    ports:
+    - "40:40/tcp"
+    - "40:40/udp"
+    - "41:41/tcp"
     sysctls:
       net.ipv4.conf.all.send_redirects: '0'
       net.ipv4.conf.default.send_redirects: '0'
@@ -48,7 +54,7 @@ services:
   dns:
     image: rancher/dns:v0.15.1
     network_mode: container:metadata
-    command: rancher-dns --listen 169.254.169.250:53 --metadata-server=localhost --answers=/etc/rancher-dns/answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
+    command: rancher-dns --listen :40 --metadata-server=localhost:41 --answers=/etc/rancher-dns/answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
     labels:
       io.rancher.scheduler.global: 'true'
     logging:

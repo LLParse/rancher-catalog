@@ -10,6 +10,7 @@ services:
       - 4500:4500/udp
     labels:
       io.rancher.sidekicks: router
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
       io.rancher.cni.link_mtu_overhead: '0'
       io.rancher.network.macsync: 'true'
@@ -41,6 +42,7 @@ services:
     network_mode: host
     pid: host
     labels:
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
       io.rancher.network.cni.binary: 'rancher-bridge'
       io.rancher.container.dns: 'true'

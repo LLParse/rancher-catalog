@@ -3,8 +3,10 @@ services:
   healthcheck:
     labels:
       io.rancher.container.create_agent: 'true'
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
     image: rancher/healthcheck:v0.3.1
+    command: healthcheck -metadata-address=169.254.169.250:41
     logging:
       driver: json-file
       options:

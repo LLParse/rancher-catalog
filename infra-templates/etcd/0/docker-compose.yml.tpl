@@ -23,4 +23,8 @@ services:
     network_mode: container:etcd
     volumes:
     - etcd:/data:z
-    - /var/etcd/backups:/data-backup:z
+    - etcd-backup:/backup:z
+volumes:
+  etcd-backup:
+    driver: rancher-nfs
+    external: true

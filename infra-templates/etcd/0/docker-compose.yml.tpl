@@ -3,7 +3,7 @@ services:
   etcd:
     # IMPORTANT!!!! DO NOT CHANGE VERSION ON UPGRADE
     image: llparse/etcd:holder
-    command: sh -c "echo Refer to sidekick for logs; mkfifo f; exec cat f"
+    command: sh -c "echo Refer to sidekick for logs; giddyup health -p 42"
     labels:
       {{- if eq .Values.CONSTRAINT_TYPE "required" }}
       io.rancher.scheduler.affinity:host_label: etcd=true

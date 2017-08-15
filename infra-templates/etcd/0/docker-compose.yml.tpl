@@ -22,5 +22,5 @@ services:
       ETCD_ELECTION_TIMEOUT: '${ETCD_ELECTION_TIMEOUT}'
     network_mode: container:etcd
     volumes:
-    - etcd:/pdata:z
+    - etcd:/data:z
     - /var/etcd/backups:/data-backup:z

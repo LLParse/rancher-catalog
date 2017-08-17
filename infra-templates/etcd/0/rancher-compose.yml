@@ -24,6 +24,11 @@
     required: true
     default: 5000
     type: int
+  - variable: BACKUP_RESTORE
+    label: Restore Volume Name
+    description: Name of the external rancher-nfs volume to restore a cluster from.
+    required: false
+    type: string
   - variable: BACKUP_ENABLE
     label: Enable Backups
     description: "Periodically backup state to an NFS volume. You must install rancher-nfs before proceeding."
@@ -47,11 +52,6 @@
     description: Expire a backup after this amount of time passes. Must conform to duration format
     required: true
     default: 24h
-    type: string
-  - variable: BACKUP_RESTORE
-    label: Restore Backup
-    description: Name of the external rancher-nfs volume to restore a cluster from.
-    required: false
     type: string
 etcd:
   health_check:

@@ -20,6 +20,9 @@ services:
     network_mode: container:etcd
     volumes:
     - etcd:/data:z
+    {{- if ne .Values.BACKUP_RESTORE "" }}
+    - {{ .Values.BACKUP_RESTORE }}:/backup:z
+    {{- end }}
 {{- if eq .Values.BACKUP_ENABLE "true" }}
   etcd-backup:
     image: llparse/etcd:v3.0.17

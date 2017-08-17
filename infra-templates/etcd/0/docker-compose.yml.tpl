@@ -35,4 +35,5 @@ services:
 volumes:
   etcd-backup:
     driver: rancher-nfs
+    external: true
 {{- end }}

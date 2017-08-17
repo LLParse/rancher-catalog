@@ -2,9 +2,8 @@ version: '2'
 services:
   etcd:
     # IMPORTANT!!!! DO NOT CHANGE VERSION ON UPGRADE
-    image: llparse/etcd:holder
-    entrypoint: /bin/sh
-    command: -c "echo Refer to sidekick for logs; giddyup health -p 42"
+    image: rancher/etcd:holder
+    command: sh -c "echo Refer to sidekick for logs; mkfifo f; exec cat f"
     labels:
       {{- if eq .Values.CONSTRAINT_TYPE "required" }}
       io.rancher.scheduler.affinity:host_label: etcd=true
@@ -12,7 +11,7 @@ services:
       io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.sidekicks: member
   member:
-    image: llparse/etcd:v3.0.17
+    image: rancher/etcd:v3.0.17-2
     environment:
       RANCHER_DEBUG: 'true'
       ETCD_HEARTBEAT_INTERVAL: '${ETCD_HEARTBEAT_INTERVAL}'
@@ -25,7 +24,7 @@ services:
     {{- end }}
 {{- if eq .Values.BACKUP_ENABLE "true" }}
   etcd-backup:
-    image: llparse/etcd:v3.0.17
+    image: rancher/etcd:v3.0.17-2
     entrypoint: /opt/rancher/etcdwrapper
     command:
     - rolling-backup

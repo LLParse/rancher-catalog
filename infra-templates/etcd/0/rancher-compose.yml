@@ -24,13 +24,19 @@
     required: true
     default: 5000
     type: int
-  - variable: ENABLE_BACKUPS
+  - variable: BACKUP_ENABLE
     label: Enable Backups
     description: "Periodically backup state to an NFS volume. You must install rancher-nfs before proceeding."
     required: true
     default: false
     type: boolean
-  - variable: BACKUP_PERIOD
+  - variable: BACKUP_NAME
+    label: Backup Volume Name
+    description: Name of the external rancher-nfs volume to write snapshots to. This volume must be created beforehand!
+    required: true
+    default: etcd-backup
+    type: string
+  - variable: BACKUP_CREATION
     label: Backup Creation Period
     description: Create a backup after this amount of time passes. Must conform to duration format
     required: true
@@ -41,6 +47,11 @@
     description: Expire a backup after this amount of time passes. Must conform to duration format
     required: true
     default: 24h
+    type: string
+  - variable: BACKUP_RESTORE
+    label: Restore Backup
+    description: Name of the external rancher-nfs volume to restore a cluster from.
+    required: false
     type: string
 etcd:
   health_check:

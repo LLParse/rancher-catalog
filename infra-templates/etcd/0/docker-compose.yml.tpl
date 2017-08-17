@@ -20,20 +20,20 @@ services:
     network_mode: container:etcd
     volumes:
     - etcd:/data:z
-{{- if eq .Values.ENABLE_BACKUPS "true" }}
+{{- if eq .Values.BACKUP_ENABLE "true" }}
   etcd-backup:
     image: llparse/etcd:v3.0.17
     entrypoint: /opt/rancher/etcdwrapper
     command:
     - rolling-backup
-    - --period=${BACKUP_PERIOD}
+    - --creation=${BACKUP_CREATION}
     - --retention=${BACKUP_RETENTION}
     environment:
       RANCHER_DEBUG: 'true'
     volumes:
-    - etcd-backup:/backup:z
+    - {{ .Values.BACKUP_NAME }}:/backup:z
 volumes:
-  etcd-backup:
+  {{ .Values.BACKUP_NAME }}:
     driver: rancher-nfs
     external: true
 {{- end }}

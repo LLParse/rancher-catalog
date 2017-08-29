@@ -1,39 +1,11 @@
 version: '2'
 services:
-  # network-manager:
-  #   image: rancher/network-manager:v0.7.7
-  #   privileged: true
-  #   network_mode: host
-  #   pid: host
-  #   command: plugin-manager --metadata-url http://169.254.169.250:41/2016-07-29
-  #   environment:
-  #     DOCKER_BRIDGE: docker0
-  #     METADATA_IP: 169.254.169.250
-  #   volumes:
-  #   - /var/run/docker.sock:/var/run/docker.sock
-  #   - /var/lib/docker:/var/lib/docker
-  #   - /var/lib/rancher/state:/var/lib/rancher/state
-  #   - /lib/modules:/lib/modules:ro
-  #   - /run:/run
-  #   - /var/run:/var/run:ro
-  #   - rancher-cni-driver:/etc/cni
-  #   - rancher-cni-driver:/opt/cni
-  #   labels:
-  #     io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
-  #     io.rancher.scheduler.global: 'true'
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: 25m
-  #       max-file: '2'
   metadata:
     cap_add:
     - NET_ADMIN
     image: llparse/metadata:dev_windows
     network_mode: nat
     labels:
-      # io.rancher.sidekicks: dns
-      # io.rancher.container.create_agent: 'true'
       # TODO host_label io.rancher.host.os=windows
       io.rancher.scheduler.affinity:host_label_ne: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
@@ -47,14 +19,14 @@ services:
       net.ipv4.conf.all.send_redirects: '0'
       net.ipv4.conf.default.send_redirects: '0'
       net.ipv4.conf.eth0.send_redirects: '0'
-  # dns:
-  #   image: rancher/dns:v0.15.1
-  #   network_mode: container:metadata
-  #   command: rancher-dns --listen :40 --metadata-server=localhost:41 --answers=/etc/rancher-dns/answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
-  #   labels:
-  #     io.rancher.scheduler.global: 'true'
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: 25m
-  #       max-file: '2'
+  dns:
+    image: llparse/dns:dev_windows
+    network_mode: nat
+    command: powershell /start.ps1 --listen :53 --metadata-server=169.254.169.250 --answers=/etc/rancher-dns/answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
+    labels:
+      io.rancher.scheduler.global: 'true'
+    logging:
+      driver: json-file
+      options:
+        max-size: 25m
+        max-file: '2'

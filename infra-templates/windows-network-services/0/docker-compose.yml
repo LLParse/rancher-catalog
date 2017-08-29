@@ -22,7 +22,7 @@ services:
   dns:
     image: llparse/dns:dev_windows
     network_mode: nat
-    command: powershell /start.ps1 --listen :53 --metadata-server=169.254.169.250 --answers=/etc/rancher-dns/answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
+    command: powershell /start.ps1 --metadata-server=169.254.169.250 --answers=C:\answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
     labels:
       io.rancher.scheduler.global: 'true'
     logging:

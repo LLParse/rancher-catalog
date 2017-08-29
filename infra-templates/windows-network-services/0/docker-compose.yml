@@ -33,7 +33,7 @@ services:
     network_mode: nat
     labels:
       # io.rancher.sidekicks: dns
-      io.rancher.container.create_agent: 'true'
+      # io.rancher.container.create_agent: 'true'
       # TODO host_label io.rancher.host.os=windows
       io.rancher.scheduler.affinity:host_label_ne: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'

@@ -6,6 +6,7 @@ services:
     image: llparse/metadata:dev_windows
     network_mode: nat
     labels:
+      io.rancher.sidekicks: dns
       # io.rancher.container.create_agent: "true"
       # TODO mock out host bind mount in cattle when present
       io.rancher.container.create_agent_label: "no"

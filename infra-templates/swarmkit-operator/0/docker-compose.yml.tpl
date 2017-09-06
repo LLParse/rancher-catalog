@@ -27,6 +27,7 @@ services:
       PROXY_BIND: "${PROXY_BIND}"
     labels:
       io.rancher.container.agent.role: environment
+      io.rancher.container.agent.skip_volumes: "true"
       io.rancher.container.create_agent: 'true'
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: io.rancher.host.os=windows
@@ -57,6 +58,7 @@ services:
       RECONCILE_PERIOD: ${RECONCILE_PERIOD}
     labels:
       io.rancher.container.agent.role: environment
+      io.rancher.container.agent.skip_volumes: "true"
       io.rancher.container.create_agent: 'true'
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: io.rancher.host.os=windows

@@ -1,0 +1,25 @@
+.catalog:
+  version: 0.0.1
+  minimum_rancher_version: v1.6.8
+  questions:
+  - variable: MANAGER_SCALE
+    label: Number of Managers
+    description: Desired number of managers to participating in service orchestration. This dictates host resilience.
+    required: true
+    default: 3
+    type: int
+  - variable: RECONCILE_PERIOD
+    label: Reconciliation Period
+    description: Duration of time between reconciliations
+    required: true
+    default: 30s
+    type: string
+  - variable: TARGET_OS
+    label: Target Operating System
+    description: Run Operator on this operating system
+    required: true
+    default: linux
+    type: enum
+    options:
+    - linux
+    - windows

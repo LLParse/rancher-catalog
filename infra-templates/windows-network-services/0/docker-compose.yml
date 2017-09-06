@@ -8,7 +8,7 @@ services:
     labels:
       io.rancher.sidekicks: dns
       io.rancher.container.create_agent: "true"
-      # TODO mock out host bind mount in cattle when present
+      io.rancher.container.agent.skip_volumes: "true"
       io.rancher.container.create_agent_label: "no"
       # TODO host_label io.rancher.host.os=windows
       io.rancher.scheduler.affinity:host_label_ne: io.rancher.host.os=linux

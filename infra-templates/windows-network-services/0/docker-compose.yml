@@ -6,7 +6,6 @@ services:
     image: llparse/metadata:dev_windows
     network_mode: nat
     labels:
-      io.rancher.sidekicks: dns
       io.rancher.container.create_agent: "true"
       io.rancher.container.agent.skip_volumes: "true"
       io.rancher.container.create_agent_label: "no"

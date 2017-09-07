@@ -37,7 +37,7 @@ services:
     image: llparse/swarmkit-operator:dev
     command: orchestrate
     environment:
-      MANAGER_SCALE: ${MANAGER_SCALE}
+      MANAGER_COUNT: ${MANAGER_COUNT}
       RECONCILE_PERIOD: ${RECONCILE_PERIOD}
     labels:
       io.rancher.container.agent.role: environment
@@ -54,7 +54,7 @@ services:
     image: llparse/swarmkit-operator:dev_windows
     command: orchestrate
     environment:
-      MANAGER_SCALE: ${MANAGER_SCALE}
+      MANAGER_COUNT: ${MANAGER_COUNT}
       RECONCILE_PERIOD: ${RECONCILE_PERIOD}
     labels:
       io.rancher.container.agent.role: environment

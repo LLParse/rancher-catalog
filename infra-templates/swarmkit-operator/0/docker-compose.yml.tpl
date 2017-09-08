@@ -49,6 +49,7 @@ services:
       options:
         max-size: 25m
         max-file: '2'
+    network_mode: bridge
 {{- else }}
   windows-operator:
     image: llparse/swarmkit-operator:dev_windows
@@ -62,4 +63,5 @@ services:
       io.rancher.container.create_agent: 'true'
       io.rancher.container.pull_image: always
       io.rancher.scheduler.affinity:host_label: io.rancher.host.os=windows
+    network_mode: nat
 {{- end }}

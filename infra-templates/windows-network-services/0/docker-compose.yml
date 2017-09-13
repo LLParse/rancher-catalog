@@ -1,16 +1,41 @@
 version: '2'
 services:
-  metadata:
+  linux-network-manager:
+    image: rancher/network-manager:v0.7.7
+    privileged: true
+    network_mode: host
+    pid: host
+    command: plugin-manager --metadata-url http://169.254.169.250/2016-07-29
+    environment:
+      DOCKER_BRIDGE: docker0
+      METADATA_IP: 169.254.169.250
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /var/lib/docker:/var/lib/docker
+    - /var/lib/rancher/state:/var/lib/rancher/state
+    - /lib/modules:/lib/modules:ro
+    - /run:/run
+    - /var/run:/var/run:ro
+    - rancher-cni-driver:/etc/cni
+    - rancher-cni-driver:/opt/cni
+    labels:
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
+      io.rancher.scheduler.global: 'true'
+    logging:
+      driver: json-file
+      options:
+        max-size: 25m
+        max-file: '2'
+  linux-metadata:
     cap_add:
     - NET_ADMIN
-    image: llparse/metadata:dev_windows
-    network_mode: nat
+    image: rancher/metadata:v0.9.3
+    network_mode: bridge
+    command: start.sh rancher-metadata -subscribe
     labels:
-      io.rancher.container.create_agent: "true"
-      io.rancher.container.agent.skip_volumes: "true"
-      io.rancher.container.create_agent_label: "no"
-      # TODO host_label io.rancher.host.os=windows
-      io.rancher.scheduler.affinity:host_label_ne: io.rancher.host.os=linux
+      io.rancher.sidekicks: linux-dns
+      io.rancher.container.create_agent: 'true'
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=linux
       io.rancher.scheduler.global: 'true'
       io.rancher.container.agent_service.metadata: 'true'
     logging:
@@ -22,14 +47,47 @@ services:
       net.ipv4.conf.all.send_redirects: '0'
       net.ipv4.conf.default.send_redirects: '0'
       net.ipv4.conf.eth0.send_redirects: '0'
-  dns:
+  linux-dns:
+    image: rancher/dns:v0.15.1
+    network_mode: container:linux-metadata
+    command: rancher-dns --listen 169.254.169.250:53 --metadata-server=localhost --answers=/etc/rancher-dns/answers.json --recurser-timeout ${DNS_RECURSER_TIMEOUT} --ttl ${TTL}
+    labels:
+      io.rancher.scheduler.global: 'true'
+    logging:
+      driver: json-file
+      options:
+        max-size: 25m
+        max-file: '2'
+  windows-metadata:
+    cap_add:
+    - NET_ADMIN
+    image: llparse/metadata:dev_windows
+    network_mode: nat
+    labels:
+      io.rancher.container.create_agent: "true"
+      io.rancher.container.agent.skip_volumes: "true"
+      io.rancher.container.create_agent_label: "no"
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=windows
+      io.rancher.scheduler.global: 'true'
+      io.rancher.container.agent_service.metadata: 'true'
+    logging:
+      driver: json-file
+      options:
+        max-size: 25m
+        max-file: '2'
+    sysctls:
+      net.ipv4.conf.all.send_redirects: '0'
+      net.ipv4.conf.default.send_redirects: '0'
+      net.ipv4.conf.eth0.send_redirects: '0'
+  windows-dns:
     image: llparse/dns:dev_windows
     network_mode: nat
     command: powershell /start.ps1 --listen=169.254.169.251:53 --metadata-server=169.254.169.250:80 --answers=C:\\answers.json --never-recurse-to=169.254.169.251 --recurser-timeout=${DNS_RECURSER_TIMEOUT} --ttl=${TTL}
     labels:
+      io.rancher.scheduler.affinity:host_label: io.rancher.host.os=windows
       io.rancher.scheduler.global: 'true'
     links:
-    - metadata
+    - windows-metadata
     logging:
       driver: json-file
       options:
